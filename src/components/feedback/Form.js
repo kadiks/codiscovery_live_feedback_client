@@ -4,6 +4,24 @@ const Form = ({ onSubmitSuccess }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
+  const types = [
+    {
+      value: "",
+      htmlText: "",
+    },
+    {
+      value: "live",
+      htmlText: "Live",
+    },
+    {
+      value: "tutorial",
+      htmlText: "Tutoriel",
+    },
+    {
+      value: "article",
+      htmlText: "Article de blog",
+    },
+  ];
 
   const onChangeTitle = ({ target }) => {
     setTitle(target.value);
@@ -40,6 +58,9 @@ const Form = ({ onSubmitSuccess }) => {
     );
     const json = await res.json();
     onSubmitSuccess(json.data);
+    setTitle("");
+    setDescription("");
+    setType("");
   };
 
   return (
@@ -58,10 +79,18 @@ const Form = ({ onSubmitSuccess }) => {
         </div>
         <div>
           <select onChange={onChangeType}>
-            <option value=""></option>
+            {types.map(({ value, htmlText }) => {
+              const isSelected = value === type ? true : false;
+              return (
+                <option value={value} selected={isSelected}>
+                  {htmlText}
+                </option>
+              );
+            })}
+            {/* <option value=""></option>
             <option value="live">Live</option>
             <option value="tutorial">Tutoriel</option>
-            <option value="article">Article de blog</option>
+            <option value="article">Article de blog</option> */}
           </select>
           <div>
             <textarea onChange={onChangeDescription} value={description} />
